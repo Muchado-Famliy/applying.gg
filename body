@@ -1,0 +1,134 @@
+<body>
+    <a href="apps.html" class="back-button">
+        <i class="fas fa-arrow-left"></i>
+        العودة
+    </a>
+
+    <div class="application-form">
+        <h1 class="form-title">نموذج التقديم للعائلة</h1>
+        <form id="familyApplicationForm">
+            <div class="form-group">
+                <label for="name">الاسم الكامل</label>
+                <input type="text" id="name" name="name" required="">
+            </div>
+
+            <div class="form-group">
+                <label for="age">العمر</label>
+                <input type="number" id="age" name="age" required="" min="13">
+            </div>
+
+            <div class="form-group">
+                <label for="discord">معرف Discord</label>
+                <input type="text" id="discord" name="discord" required="" placeholder="example#1234">
+            </div>
+
+            <div class="form-group">
+                <label for="discordId">أيدي Discord</label>
+                <input type="text" id="discordId" name="discordId" required="" placeholder="123456789012345678">
+            </div>
+
+            <div class="form-group">
+                <label for="experience">الخبرات السابقة</label>
+                <textarea id="experience" name="experience" required=""></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="reason">لماذا تريد الانضمام إلى عائلتنا؟</label>
+                <textarea id="reason" name="reason" required=""></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="contribution">كيف يمكنك المساهمة في تطوير العائلة؟</label>
+                <textarea id="contribution" name="contribution" required=""></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn">إرسال الطلب</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('familyApplicationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const webhookURL = 'https://discord.com/api/webhooks/1335023977591996426/u6svhR2PJQvdQwOWioe-4dH0vH-eviWnNHRa0nRC9Et4xloBH8ASYs25UmAFRQoIPwxy';
+            
+            const formData = {
+                name: document.getElementById('name').value,
+                age: document.getElementById('age').value,
+                discord: document.getElementById('discord').value,
+                discordId: document.getElementById('discordId').value,
+                experience: document.getElementById('experience').value,
+                reason: document.getElementById('reason').value,
+                contribution: document.getElementById('contribution').value
+            };
+
+            const embed = {
+                title: '📝 طلب تقديم جديد للعائلة',
+                color: 0xFFD700,
+                fields: [
+                    {
+                        name: '👤 الاسم الكامل',
+                        value: `\`\`\`${formData.name}\`\`\``,
+                        inline: true
+                    },
+                    {
+                        name: '🎂 العمر',
+                        value: `\`\`\`${formData.age}\`\`\``,
+                        inline: true
+                    },
+                    {
+                        name: '🎮 معرف Discord',
+                        value: `\`\`\`${formData.discord}\`\`\``,
+                        inline: true
+                    },
+                    {
+                        name: '🆔 أيدي Discord',
+                        value: `\`\`\`${formData.discordId}\`\`\``,
+                        inline: true
+                    },
+                    {
+                        name: '💼 الخبرات السابقة',
+                        value: `\`\`\`${formData.experience}\`\`\``
+                    },
+                    {
+                        name: '❓ سبب الانضمام',
+                        value: `\`\`\`${formData.reason}\`\`\``
+                    },
+                    {
+                        name: '🌟 المساهمة المتوقعة',
+                        value: `\`\`\`${formData.contribution}\`\`\``
+                    }
+                ],
+                timestamp: new Date(),
+                footer: {
+                    text: 'نظام التقديمات - U.Keeler'
+                }
+            };
+
+            fetch(webhookURL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    content: '<@&1335317428325843056>',
+                    embeds: [embed]
+                })
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('تم إرسال طلبك بنجاح! سنقوم بمراجعته والرد عليك قريباً.');
+                    this.reset();
+                } else {
+                    alert('حدث خطأ أثناء إرسال الطلب. يرجى المحاولة مرة أخرى.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('حدث خطأ أثناء إرسال الطلب. يرجى المحاولة مرة أخرى.');
+            });
+        });
+    </script>
+
+
+</body>
